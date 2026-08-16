@@ -59,7 +59,7 @@ userSchema.pre('save', async function(next) {
     // We don't want password to be modified everytime when save the data. We only want to encrypt it when we password field is modified
     if(!this.isModified("password")) return next()
 
-    this.password = bcrypt.hash(this.password, 10) // 10 is salt/hash rounds
+    this.password = await bcrypt.hash(this.password, 10) // 10 is salt/hash rounds
     next()
 })
 
@@ -81,14 +81,15 @@ userSchema.methods.generateAcessToken = function() {
             username: this.username,
             fullName: this.fullName
         },
+        // Access token
         process.env.ACESSS_TOKEN_SECRET,
-        {
+        {   // Expiry of access token
             expiresIn : process.env.ACESS_TOKEN_EXPIRY
         }
     )
 }
 
-// Refresh token has lesser information otherwise it will be as acess token
+// Refresh token has lesser information otherwise it will be as access token
 userSchema.methods.generateRefreshToken = function() {
     return jwt.sign (
         {
@@ -101,4 +102,4 @@ userSchema.methods.generateRefreshToken = function() {
     )
 }
 
-export const User = mongoose.Model('User', userSchema)
+export const User = mongoose.model('User', userSchema)
