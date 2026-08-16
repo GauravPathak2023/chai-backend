@@ -55,12 +55,11 @@ const userSchema = new Schema({
 // Using pre hook. Hook can have these events -> validate, save, remove, updateOne, deleteOne, init
 // We want password encryption before data save.
 // Arrow fun. doesn't have the reference of this so we don't use it here
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function() {
     // We don't want password to be modified everytime when save the data. We only want to encrypt it when we password field is modified
-    if(!this.isModified("password")) return next()
+    if(!this.isModified("password")) return
 
     this.password = await bcrypt.hash(this.password, 10) // 10 is salt/hash rounds
-    next()
 })
 
 // Custom Methods

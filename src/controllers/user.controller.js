@@ -17,7 +17,7 @@ const registerUser = asyncHandler(async (req,res) => {
    // return response
 
    const {fullName, email, username, password} = req.body
-   console.log("email", email)
+//    console.log("email", email)
 
    // Use if-else for every variable
 //    if(fullName==="")
@@ -30,7 +30,7 @@ const registerUser = asyncHandler(async (req,res) => {
     }
 
     // We search if username or email exists in mongodb or not
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{ username }, { email }]
     })
     // If user exist then he/she can't register
@@ -38,9 +38,20 @@ const registerUser = asyncHandler(async (req,res) => {
         throw new ApiError(409, "User with email or username already exists")
 
     // Middleware adds fields in request. req.body is default from express so multer gives us req.files
-    const avatarLocalPath = req.files?.avatar[0]?.path; // We may or may not have the access so use ? (means optional)
+    //const avatarLocalPath = req.files?.avatar[0]?.path; // We may or may not have the access so use ? (means optional)
 
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    let avatarLocalPath;
+    if(req.files && Array.isArray(req.files.avatar) && req.files.avatar.length > 0) {
+        avatarLocalPath = req.files.avatar[0].path
+    }
+
+    // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    // Checking for cover image 
+    let coverImageLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
+
 
     // Checking for avatar
     if(!avatarLocalPath)
