@@ -41,4 +41,4 @@ const videoSchema = new Schema({
 // We can add our own plugins in Mongoose. Aggregate framework came late so we add it using plugin() and then we can write aggregation quries
 videoSchema.plugin(moongooseAggregatePaginate)
 
-export const Video = mongoose.Model('Video', videoSchema)
+export const Video = mongoose.model('Video', videoSchema)
