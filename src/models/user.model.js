@@ -70,7 +70,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 }
 
 // Methods for generating access and refresh token
-userSchema.methods.generateAcessToken = function() {
+userSchema.methods.generateAccessToken = function() {
     return jwt.sign(
         // Giving payload for signing token
         {
@@ -81,9 +81,9 @@ userSchema.methods.generateAcessToken = function() {
             fullName: this.fullName
         },
         // Access token
-        process.env.ACESSS_TOKEN_SECRET,
+        process.env.ACCESS_TOKEN_SECRET,
         {   // Expiry of access token
-            expiresIn : process.env.ACESS_TOKEN_EXPIRY
+            expiresIn : process.env.ACCESS_TOKEN_EXPIRY
         }
     )
 }

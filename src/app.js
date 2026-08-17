@@ -34,4 +34,12 @@ import userRouter from './routes/user.routes.js'
 // routes declaration
 app.use("/api/v1/users", userRouter)
 
+// Chatgpt code
+// console.log(
+//     userRouter.stack.map(route => ({
+//         path: route.route?.path,
+//         methods: route.route?.methods
+//     }))
+// );
+
 export {app}
